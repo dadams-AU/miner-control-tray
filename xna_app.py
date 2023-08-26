@@ -26,7 +26,7 @@ def start_miner():
 def stop_miner():
     os.system('pkill -f t-rex')
 
-schedule.every().day.at("20:00").do(start_miner) # time of peak electricty costs
+schedule.every().day.at("20:00").do(start_miner) # time of peak electricity costs
 schedule.every().day.at("17:00").do(stop_miner)
 
 keep_running = True
