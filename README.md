@@ -1,5 +1,3 @@
-Certainly! Here's a draft for a `README.md` that describes the project and gives credit:
-
 ---
 
 # Miner Control Tray Application
