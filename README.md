@@ -47,7 +47,7 @@ Once the application is running:
 ## Credits
 
 - Application developed and conceptualized by ChatGPT from OpenAI.
-- Special thanks to the user for collaborating on refining the requirements and features.
+- Special thanks to [@dadams-AU](https://github.com/dadams-AU) for collaborating on refining the requirements and features.
 
 ## License
 
