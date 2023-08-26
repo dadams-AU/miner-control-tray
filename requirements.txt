@@ -1,0 +1,4 @@
+plyer
+pystray
+Pillow
+schedule
