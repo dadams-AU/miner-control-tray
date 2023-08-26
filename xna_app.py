@@ -14,8 +14,8 @@ from plyer import notification
 def start_miner():
     current_time = datetime.now().time()
     if current_time <= time(17, 0) or current_time >= time(20, 0):
-        os.chdir('/home/miner/miner/t-rex/')
-        os.system('./xna.sh')
+        os.chdir('/home/miner/miner/t-rex/') # location of your trex software
+        os.system('./xna.sh') # sh file for your mining preferences, algo, username, etc or put the whole thing here
     else:
         notification.notify(
             title="Miner Control",
@@ -26,7 +26,7 @@ def start_miner():
 def stop_miner():
     os.system('pkill -f t-rex')
 
-schedule.every().day.at("20:00").do(start_miner)
+schedule.every().day.at("20:00").do(start_miner) # time of peak electricty costs
 schedule.every().day.at("17:00").do(stop_miner)
 
 keep_running = True
