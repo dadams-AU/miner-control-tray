@@ -57,10 +57,13 @@ def on_activate_stop(icon, item):
     stop_miner()
 
 def on_activate_exit(icon, item):
+    global keep_running
+    print("Exit activated") 
     stop_miner()
     keep_running = False
     t.join()
     icon.stop()
+
 
 image = create_image()
 menu = (pystray.MenuItem('Start Miner', on_activate_start),
