@@ -12,10 +12,19 @@ from plyer import notification
 
 # Miner control functions
 def start_miner():
+    global manually_stopped
     current_time = datetime.now().time()
+    if manually_stopped:  # Do not start if manually stopped by user
+        notification.notify(
+            title="Miner Control",
+            message="The miner was manually stopped and won't start until tomorrow.",
+            timeout=10
+        )
+        return
+
     if current_time <= time(17, 0) or current_time >= time(20, 0):
-        os.chdir('/home/miner/miner/t-rex/') # location of your trex software
-        os.system('./xna.sh') # sh file for your mining preferences, algo, username, etc or put the whole thing here
+        os.chdir('/home/miner/miner/t-rex/') 
+        os.system('./xna.sh') 
     else:
         notification.notify(
             title="Miner Control",
@@ -24,12 +33,19 @@ def start_miner():
         )
 
 def stop_miner():
+    global manually_stopped
+    manually_stopped = True
     os.system('pkill -f t-rex')
+
 
 schedule.every().day.at("20:00").do(start_miner) # time of peak electricity costs
 schedule.every().day.at("17:00").do(stop_miner)
+schedule.every().day.at("09:00").do(lambda: setattr(globals(), 'manually_stopped', False))
+
 
 keep_running = True
+manually_stopped = False
+
 
 def scheduler():
     while keep_running:
