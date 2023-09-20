@@ -9,12 +9,12 @@ from datetime import datetime, time
 from time import sleep
 from plyer import notification
 
-
 # Miner control functions
 def start_miner():
     global manually_stopped
     current_time = datetime.now().time()
-    if manually_stopped:  # Do not start if manually stopped by user
+    
+    if manually_stopped:
         notification.notify(
             title="Miner Control",
             message="The miner was manually stopped and won't start until tomorrow.",
@@ -22,31 +22,32 @@ def start_miner():
         )
         return
 
-    if current_time <= time(17, 0) or current_time >= time(20, 0):
-        os.chdir('/home/miner/miner/t-rex/') 
-        os.system('./xna.sh') 
-    else:
+    if time(17, 0) <= current_time <= time(20, 0): 
         notification.notify(
             title="Miner Control",
-            message="It's not the scheduled time to start the miner. Wait until 8 PM.",
+            message="It's not the scheduled time to start the miner. Electricity costs are too high.",
             timeout=10
         )
+        return
 
-def stop_miner():
+    os.chdir('/home/miner/miner/t-rex/') 
+    os.system('./xna.sh') 
+
+def stop_miner(manual=False):
     global manually_stopped
-    manually_stopped = True
+    if manual:
+        manually_stopped = True
     os.system('pkill -f t-rex')
 
-
-schedule.every().day.at("20:00").do(start_miner) # time of peak electricity costs
+# Schedule tasks
+schedule.every().day.at("20:00").do(start_miner)
 schedule.every().day.at("17:00").do(stop_miner)
 schedule.every().day.at("09:00").do(lambda: setattr(globals(), 'manually_stopped', False))
-
 
 keep_running = True
 manually_stopped = False
 
-
+# Scheduler thread
 def scheduler():
     while keep_running:
         schedule.run_pending()
@@ -55,7 +56,7 @@ def scheduler():
 t = threading.Thread(target=scheduler)
 t.start()
 
-# Create system tray icon
+# System tray icon functions and creation
 def create_image():
     width, height = 64, 64
     color1 = (0, 0, 0)
@@ -70,7 +71,7 @@ def on_activate_start(icon, item):
     start_miner()
 
 def on_activate_stop(icon, item):
-    stop_miner()
+    stop_miner(manual=True)
 
 def on_activate_exit(icon, item):
     global keep_running
@@ -79,7 +80,6 @@ def on_activate_exit(icon, item):
     keep_running = False
     t.join()
     icon.stop()
-
 
 image = create_image()
 menu = (pystray.MenuItem('Start Miner', on_activate_start),
