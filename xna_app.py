@@ -29,9 +29,12 @@ def start_miner():
             timeout=10
         )
         return
-
-    os.chdir('/home/miner/miner/t-rex/') 
-    os.system('./xna.sh') 
+    
+    if current_time > time(20, 0) or current_time < time(17, 0):
+        os.chdir('/home/miner/miner/t-rex/') 
+        os.system('./xna.sh') 
+    else:
+        stop_miner()
 
 def stop_miner(manual=False):
     global manually_stopped
