@@ -10,7 +10,7 @@ from plyer import notification
 import logging
 import subprocess
 
-logging.basicConfig(filename='/miner_control/miner_control.log', level=logging.INFO)
+logging.basicConfig(filename='miner_control.log', level=logging.INFO)
 try:
     output = subprocess.check_output(
         ['/usr/bin/pkill', '-f', 'rigel'],
