@@ -8,8 +8,18 @@ import threading
 from time import sleep
 from plyer import notification
 import logging
+import subprocess
 
-logging.basicConfig(filename='miner_control.log', level=logging.INFO)
+logging.basicConfig(filename='/miner_control/miner_control.log', level=logging.INFO)
+try:
+    output = subprocess.check_output(
+        ['/usr/bin/pkill', '-f', 'rigel'],
+        stderr=subprocess.STDOUT,
+        shell=True
+    )
+    logging.info(f"pkill output: {output}")
+except subprocess.CalledProcessError as e:
+    logging.error(f"pkill failed with error: {e.output}")
 
 MINER_PATH = os.getenv('MINER_PATH', '/home/miner/miner/rigel/')
 
@@ -46,6 +56,8 @@ class MinerController:
                     message=str(e),
                     timeout=10
                 )
+
+
 
     def stop_miner(self, manual=False):
         if manual:
