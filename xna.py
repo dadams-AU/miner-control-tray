@@ -14,14 +14,14 @@ keep_running = True  # Shared flag to control the scheduler thread
 def start_miner():
     current_time = datetime.now().time()
     if current_time <= time(17, 0) or current_time >= time(20, 0):
-        os.chdir('/home/miner/miner/t-rex/')
+        os.chdir('/home/miner/miner/rigel/')
         os.system('./xna.sh')
     else:
         print("It's not the scheduled time to start the miner. Wait until 8 PM.")
 
 
 def stop_miner():
-    os.system('pkill -f t-rex')
+    os.system('pkill -f rigel')
 
 
 schedule.every().day.at("20:00").do(start_miner)
@@ -38,7 +38,7 @@ def scheduler():
 t = threading.Thread(target=scheduler)
 t.start()
 
-print("T-Rex Miner Controller")
+print("Rigel Miner Controller")
 print("Press (k) to manually kill the miner.")
 print("Press (s) to manually start the miner.")
 print("Press (q) to quit this script.")
