@@ -11,15 +11,6 @@ import logging
 import subprocess
 
 logging.basicConfig(filename='miner_control.log', level=logging.INFO)
-try:
-    output = subprocess.check_output(
-        ['/usr/bin/pkill', '-f', 'xna.sh'],
-        stderr=subprocess.STDOUT,
-        shell=True
-    )
-    logging.info(f"pkill output: {output}")
-except subprocess.CalledProcessError as e:
-    logging.error(f"pkill failed with error: {e.output}")
 
 MINER_PATH = os.getenv('MINER_PATH', '/home/miner/miner/rigel/')
 
@@ -57,22 +48,24 @@ class MinerController:
                     timeout=10
                 )
 
-    def stop_miner(self, manual=False):
-        if manual:
-            self.manually_stopped = True
-        try:
-            os.system('pkill -f xna.sh')
-            logging.info("Miner stopped.")
-        except Exception as e:
-            notification.notify(
-                title="Miner Control Error",
-                message=str(e),
-                timeout=10
-            )
+def stop_miner(self, manual=False):
+    if manual:
+        self.manually_stopped = True
+    try:
+        result = subprocess.run(["/usr/bin/pkill", "-f", "rigel"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        logging.info(f"stdout: {result.stdout}, stderr: {result.stderr}")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to stop miner: {e}, stdout: {e.stdout}, stderr: {e.stderr}")
+        notification.notify(
+            title="Miner Control Error",
+            message=f"Failed to stop miner: {e}",
+            timeout=10
+        )
 
     def reset_manual_stop(self):
         self.manually_stopped = False
         logging.info("Manual stop reset.")
+
 
 def create_image():
     width, height = 64, 64
@@ -105,3 +98,4 @@ if __name__ == "__main__":
             pystray.MenuItem('Exit', on_activate_exit))
     icon = pystray.Icon("miner_control", image, "Miner Control", menu)
     icon.run()
+

@@ -1,9 +1,0 @@
-ERROR:root:pkill failed with error: b''
-INFO:root:Miner stopped.
-ERROR:root:pkill failed with error: b''
-INFO:root:Miner started.
-INFO:root:Miner stopped.
-INFO:root:Miner stopped.
-INFO:root:Miner stopped.
-ERROR:root:pkill failed with error: b"pkill: no matching criteria specified\nTry `pkill --help' for more information.\n"
-INFO:root:Miner started.
