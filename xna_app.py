@@ -51,26 +51,28 @@ class MinerController:
                     timeout=10
                 )
 
-    def stop_miner(self, manual=False):
-        if manual:
-            self.manually_stopped = True
-        try:
-            result = subprocess.run(
-                ["/usr/bin/pkill", "-f", "rigel"],
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            logging.info(f"stdout: {result.stdout}, stderr: {result.stderr}")
-        except subprocess.CalledProcessError as e:
-            logging.error(
-                f"Failed to stop miner: {e}, stdout: {e.stdout}, stderr: {e.stderr}"
-            )
-            notification.notify(
-                title="Miner Control Error",
-                message=f"Failed to stop miner: {e}",
-                timeout=10
-            )
+def stop_miner(self, manual=False):
+    if manual:
+        self.manually_stopped = True
+    try:
+        result = subprocess.run(
+            ["/usr/bin/pkill", "-f", "rigel"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        logging.info(f"stdout: {result.stdout}, stderr: {result.stderr}")
+    except subprocess.CalledProcessError as e:
+        logging.error(
+            f"Failed to stop miner: {e}, stdout: {e.stdout}, stderr: {e.stderr}"
+        )
+        notification.notify(
+            title="Miner Control Error",
+            message=f"Failed to stop miner: {e}",
+            timeout=10
+        )
+        # Even if we fail to stop the miner, we proceed to allow the script to exit
+        return
 
     def reset_manual_stop(self):
         self.manually_stopped = False
