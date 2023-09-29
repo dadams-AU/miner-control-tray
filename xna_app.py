@@ -26,7 +26,10 @@ class MinerController:
 
     def scheduler(self):
         while self.keep_running:
-            schedule.run_pending()
+            try:
+                schedule.run_pending()
+            except Exception as e:
+                logging.error(f"Scheduler encountered an error: {e}")
             sleep(60)
 
     def start_miner(self):
@@ -48,19 +51,26 @@ class MinerController:
                     timeout=10
                 )
 
-def stop_miner(self, manual=False):
-    if manual:
-        self.manually_stopped = True
-    try:
-        result = subprocess.run(["/usr/bin/pkill", "-f", "rigel"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        logging.info(f"stdout: {result.stdout}, stderr: {result.stderr}")
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Failed to stop miner: {e}, stdout: {e.stdout}, stderr: {e.stderr}")
-        notification.notify(
-            title="Miner Control Error",
-            message=f"Failed to stop miner: {e}",
-            timeout=10
-        )
+    def stop_miner(self, manual=False):
+        if manual:
+            self.manually_stopped = True
+        try:
+            result = subprocess.run(
+                ["/usr/bin/pkill", "-f", "rigel"],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            logging.info(f"stdout: {result.stdout}, stderr: {result.stderr}")
+        except subprocess.CalledProcessError as e:
+            logging.error(
+                f"Failed to stop miner: {e}, stdout: {e.stdout}, stderr: {e.stderr}"
+            )
+            notification.notify(
+                title="Miner Control Error",
+                message=f"Failed to stop miner: {e}",
+                timeout=10
+            )
 
     def reset_manual_stop(self):
         self.manually_stopped = False
@@ -84,6 +94,21 @@ def on_activate_stop(icon, item):
     controller.stop_miner(manual=True)
 
 def on_activate_exit(icon, item):
+    try:
+        logging.info("Exit activated")
+        print("Exit activated")
+        
+        controller.keep_running = False
+        controller.stop_miner()
+        
+        controller.t.join()
+        logging.info("Thread joined successfully")
+        
+        icon.stop()
+        logging.info("Icon stopped successfully")
+    except Exception as e:
+        logging.error(f"Error in exit routine: {e}")
+        
     controller.keep_running = False
     print("Exit activated")
     controller.stop_miner()
