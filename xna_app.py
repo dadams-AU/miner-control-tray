@@ -13,7 +13,7 @@ import subprocess
 logging.basicConfig(filename='miner_control.log', level=logging.INFO)
 try:
     output = subprocess.check_output(
-        ['/usr/bin/pkill', '-f', 'rigel'],
+        ['/usr/bin/pkill', '-f', 'xna.sh'],
         stderr=subprocess.STDOUT,
         shell=True
     )
@@ -57,13 +57,11 @@ class MinerController:
                     timeout=10
                 )
 
-
-
     def stop_miner(self, manual=False):
         if manual:
             self.manually_stopped = True
         try:
-            os.system('pkill -f rigel')
+            os.system('pkill -f xna.sh')
             logging.info("Miner stopped.")
         except Exception as e:
             notification.notify(
