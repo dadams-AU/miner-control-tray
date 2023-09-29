@@ -30,8 +30,8 @@ def start_miner():
         )
         return
     
-    if current_time > time(20, 0) or current_time < time(17, 0):
-        os.chdir('/home/miner/miner/t-rex/') 
+    if True:
+        os.chdir('/home/miner/miner/rigel/') 
         os.system('./xna.sh') 
     else:
         stop_miner()
@@ -40,7 +40,7 @@ def stop_miner(manual=False):
     global manually_stopped
     if manual:
         manually_stopped = True
-    os.system('pkill -f t-rex')
+    os.system('pkill -f rigel')
 
 # Schedule tasks
 schedule.every().day.at("20:00").do(start_miner)
