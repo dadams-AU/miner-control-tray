@@ -2,7 +2,7 @@
 
 # Miner Control Tray Application
 
-A simple system tray application to control the T-Rex Miner based on predefined schedules. Built with Python, this application provides a convenient interface for users to start, stop, or monitor their mining operations right from their desktop's system tray.
+A simple system tray application to control the Rigel Miner based on predefined schedules. Built with Python, this application provides a convenient interface for users to start, stop, or monitor their mining operations right from their desktop's system tray. This should work with any mining software.
 
 ## Features
 
@@ -41,11 +41,6 @@ Once the application is running:
 - Select "Start Miner" to manually start the mining process.
 - Select "Stop Miner" to manually stop the mining process.
 - Click "Exit" to close the tray application.
-
-## Credits
-
-- Application developed and conceptualized by ChatGPT from OpenAI.
-- Special thanks to [@dadams-AU](https://github.com/dadams-AU) for collaborating on refining the requirements and features.
 
 ## License
 
