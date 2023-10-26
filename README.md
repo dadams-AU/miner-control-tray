@@ -7,7 +7,7 @@ A simple system tray application to control the Rigel Miner based on predefined 
 ## Features
 
 - **Scheduled Operations**: The miner is set to start automatically at 8 PM and stop at 5 PM daily.
-- **Manual Control**: Users can manually start or stop the miner anytime from the system tray menu.
+- **Manual Control**: Users can manually start or stop the miner from the system tray menu anytime.
 - **Notifications**: Provides feedback to users when they try to start the miner outside the scheduled hours.
 
 ## Installation
