@@ -25,12 +25,12 @@ A simple system tray application to control the Rigel Miner based on predefined 
     pip install -r requirements.txt
     ```
 
-3. Adjust any paths or settings in `xna_app.py` if necessary.
+3. Adjust any paths or settings in `_app.py` if necessary.
 
 4. Run the application:
 
     ```bash
-    python3 xna_app.py
+    python3 `app.py
     ```
 
 ## Usage
